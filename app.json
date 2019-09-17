@@ -1,0 +1,7 @@
+{
+  "name": "image-face-detector",
+  "description": "Rest api for face recognitions libs",
+  "repository": "https://github.com/grinat/image_face_detector",
+  "stack": "container",
+  "success_url": "/"
+}

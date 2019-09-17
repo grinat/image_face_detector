@@ -1,0 +1,45 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "description": "",
+    "version": "0.0.1",
+    "title": ""
+  },
+  "basePath": "/api/v1/",
+  "tags": [
+    {
+      "name": "methods",
+      "description": ""
+    }
+  ],
+  "paths": {
+    "/face-locations": {
+      "post": {
+        "tags": [
+          "methods"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    }
+  }
+}

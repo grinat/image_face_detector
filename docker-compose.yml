@@ -1,0 +1,18 @@
+version: '2'
+services:
+  python.image_face_detector:
+    ports:
+      - 5000:5000
+    container_name: image_face_detector-python
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+    - .:/app
+    - ./venv:/app/venv
+    networks:
+      - image_face_detector-network
+    command: ["make", "dev-docker-compose"]
+
+networks:
+  image_face_detector-network:

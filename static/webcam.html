@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>WebCam test</title>
+</head>
+<body>
+
+<div id="webCamBlock">
+    <video autoplay="true" id="video"></video>
+</div>
+<div id="webCamFallback" style="display: none;">
+    <input type="file" id="imageInp">
+</div>
+
+<img src="" id="imageOut">
+
+<script>
+    function onDeviceError() {
+        webCamFallback.style.display = 'block'
+        imageInp.addEventListener('change', handleChange)
+    }
+
+    function handleChange(e) {
+        const files = e.target.files || e.dataTransfer.files
+        if (!files.length) {
+          return
+        }
+
+        uploadFile(files[0])
+    }
+
+    function uploadFile(blob) {
+        const fd = new FormData()
+        fd.append('image', blob)
+
+        fetch('/api/v1/face-locations', {
+            method: 'POST',
+            body: fd
+        })
+            .catch(e => alert(e.toString()))
+            .then(r => r.json())
+            .then(r => {
+                imageOut.src = r.image_with_landmarks
+            })
+    }
+
+    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        navigator.mediaDevices.getUserMedia({video: true})
+            .then(stream => video.srcObject = stream)
+            .catch(e => onDeviceError())
+    } else {
+        onDeviceError()
+    }
+</script>
+
+</body>
+</html>
