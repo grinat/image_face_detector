@@ -8,6 +8,7 @@
 
 <div id="webCamBlock">
     <video autoplay="true" id="video"></video>
+    <button type="button" id="takeScreen">Take screen and detect</button>
 </div>
 <div id="webCamFallback" style="display: none;">
     <input type="file" id="imageInp">
@@ -41,14 +42,28 @@
             .catch(e => alert(e.toString()))
             .then(r => r.json())
             .then(r => {
+                if (!r.image_with_landmarks) {
+                    alert(r.message)
+                    return
+                }
                 imageOut.src = r.image_with_landmarks
             })
+    }
+
+    function handleTakeScreen() {
+        const canvas = document.createElement('canvas')
+        canvas.height = video.videoHeight
+        canvas.width = video.videoWidth
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
+        canvas.toBlob(uploadFile)
     }
 
     if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
         navigator.mediaDevices.getUserMedia({video: true})
             .then(stream => video.srcObject = stream)
             .catch(e => onDeviceError())
+        takeScreen.addEventListener('click', handleTakeScreen)
     } else {
         onDeviceError()
     }

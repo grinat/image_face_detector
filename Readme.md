@@ -5,16 +5,17 @@ Rest api for face recognitions libs
 
 [Try](https://image-face-detector.herokuapp.com/static/webcam.html)
 
+[Swagger Docs](https://image-face-detector.herokuapp.com/api/v1/docs/)
+
 ### Build, deploy, develop
 #### Develop
-If you havent python3 on your local machine
-```
-docker-compose up
-```
-Else
 ```
 pip3 install -r requirements.txt
 make dev
+```
+Or with docker-compose
+```
+docker-compose up
 ```
 
 #### Build docker image

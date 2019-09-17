@@ -1,10 +1,12 @@
 from flask import Flask, request, redirect, send_from_directory
 from flask_swagger_ui import get_swaggerui_blueprint
+from werkzeug.exceptions import HTTPException
 import json
 import uuid
 import recognition
 import os
 import base64
+import traceback
 
 app = Flask(__name__)
 
@@ -21,6 +23,13 @@ def face_locations():
     f.save(file_path)
 
     out = recognition.face_locations(file_path)
+    os.remove(file_path)
+
+    if len(out['face_landmarks_list']) == 0:
+        return json.dumps({
+            "message": "No face found"
+        }), 422
+
     out_w_lands_base64 = base64.b64encode(out['image_with_landmarks'].getvalue()).decode('ascii')
     face = {
         "app_version": APP_VERSION,
@@ -28,9 +37,18 @@ def face_locations():
         "image_with_landmarks": "data:image/jpg;base64," + out_w_lands_base64
     }
 
-    os.remove(file_path)
+    return json.dumps(face), 200
 
-    return json.dumps(face)
+
+@app.errorhandler(HTTPException)
+def handle_exception(e):
+    response = e.get_response()
+    response.data = json.dumps({
+        "code": e.code,
+        "name": e.name,
+        "description": traceback.format_exc()
+    })
+    return response
 
 
 @app.route('/', methods=['POST', 'GET'])

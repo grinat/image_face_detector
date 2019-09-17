@@ -28,6 +28,9 @@ def highlight_face_marks(image, face_landmarks_list, size):
         d.line(face_landmarks['left_eye'] + [face_landmarks['left_eye'][0]], fill=(0, 0, 0, 110), width=6)
         d.line(face_landmarks['right_eye'] + [face_landmarks['right_eye'][0]], fill=(0, 0, 0, 110), width=6)
 
+        d.line(face_landmarks['nose_bridge'], fill=(150, 0, 0, 128), width=6)
+        d.line(face_landmarks['chin'], fill=(150, 0, 0, 128), width=6)
+
     buffered = BytesIO()
     pil_image.thumbnail(size)
     pil_image.save(buffered, format="JPEG")
