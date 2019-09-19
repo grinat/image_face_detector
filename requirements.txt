@@ -3,11 +3,13 @@ dlib==19.17.0
 face-recognition==1.2.3
 face-recognition-models==0.3.0
 Flask==1.1.1
+Flask-Cors==3.0.8
 flask-swagger-ui==3.20.9
 itsdangerous==1.1.0
 Jinja2==2.10.1
 MarkupSafe==1.1.1
 numpy==1.17.2
 Pillow==6.1.0
+six==1.12.0
 uWSGI==2.0.18
 Werkzeug==0.15.6

@@ -1,15 +1,62 @@
 import face_recognition
-import helpers
+import image_transform
+import numpy as np
 
 
-def face_locations(img_path):
+def face_landmarks(img_path, out_sz):
     image = face_recognition.load_image_file(img_path)
     face_landmarks_list = face_recognition.face_landmarks(image)
 
-    size = 512, 512
-    image_with_landmarks = helpers.highlight_face_marks(image, face_landmarks_list, size)
+    size = (out_sz, out_sz)
+    image_with_landmarks = image_transform.highlight_face_marks(image, face_landmarks_list, size)
 
     return {
         "face_landmarks_list": face_landmarks_list,
         "image_with_landmarks": image_with_landmarks
+    }
+
+
+def face_locations(img_path, out_sz):
+    image = face_recognition.load_image_file(img_path)
+    face_locations_list = face_recognition.face_locations(image)
+
+    size = (out_sz, out_sz)
+    images = image_transform.crop_faces(image, face_locations_list, size)
+
+    return {
+        "face_locations_list": face_locations_list,
+        "images": images
+    }
+
+
+def face_encodings(img_path):
+    image = face_recognition.load_image_file(img_path)
+    face_encodings_np_list = face_recognition.face_encodings(image)
+
+    # we convert numpy to list for cominicty with others api
+    face_encodings_list = []
+    for face_np in face_encodings_np_list:
+        face_encodings_list.append(face_np.tolist())
+
+    return {
+        "face_encodings_list": face_encodings_list
+    }
+
+
+def compare(haystack, needle):
+    # we convert python list to numpy
+    needle_np = np.array(needle)
+    haystack_np_list = []
+    for face in haystack:
+        haystack_np_list.append(np.array(face))
+
+    # compares numpy arrays
+    results_np = face_recognition.compare_faces(haystack_np_list, needle_np)
+
+    results = []
+    for res_np in results_np:
+        results.append(res_np.tolist())
+
+    return {
+        "results": results
     }

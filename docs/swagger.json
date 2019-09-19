@@ -8,15 +8,19 @@
   "basePath": "/api/v1/",
   "tags": [
     {
-      "name": "methods",
-      "description": ""
+      "name": "locations",
+      "description": "Detect coors of face, nose, eye etc..., crop faces"
+    },
+    {
+      "name": "recognize",
+      "description": "Get person face encode and compare with others"
     }
   ],
   "paths": {
-    "/face-locations": {
+    "/face-landmarks": {
       "post": {
         "tags": [
-          "methods"
+          "locations"
         ],
         "consumes": [
           "multipart/form-data"
@@ -28,7 +32,13 @@
           {
             "in": "formData",
             "name": "image",
-            "type": "file"
+            "type": "file",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "out_image_sz",
+            "type": "number"
           }
         ],
         "responses": {
@@ -37,6 +47,133 @@
           },
           "500": {
             "description": "Error"
+          }
+        }
+      }
+    },
+    "/face-locations": {
+      "post": {
+        "tags": [
+          "locations"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true
+          },
+          {
+            "in": "formData",
+            "name": "out_image_sz",
+            "type": "number"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/face-encodings": {
+      "post": {
+        "tags": [
+          "recognize"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
+    "/compare-faces": {
+      "post": {
+        "tags": [
+          "recognize"
+        ],
+        "consumes": [
+          "application/json"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "description": "Data from face-encodings",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/CompareFacesForm"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    }
+  },
+  "definitions": {
+    "CompareFacesForm": {
+      "type": "object",
+      "properties": {
+        "needle": {
+          "description": "Face to compare",
+          "type": "array",
+          "items": {
+            "type": "integer"
+          },
+          "example": [
+            -0.08118981122970581,
+            0.07731892168521881
+          ]
+        },
+        "haystack": {
+          "description": "Compare with faces",
+          "type": "array",
+          "items": {
+            "type": "array",
+            "items": {
+              "type": "integer"
+            },
+            "example": [
+              -0.07118981122970582,
+              0.06731892168521882
+            ]
           }
         }
       }
