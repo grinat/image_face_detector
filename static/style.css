@@ -1,0 +1,82 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+.half-vh {
+    width: auto;
+    height: 50vh;
+    position: relative;
+}
+
+.centered {
+    display: block;
+    text-align: center;
+    position: relative;
+    width: 100%;
+}
+
+#wait {
+    position: fixed;
+    height: 100%;
+    top: 0;
+    left: 0;
+    text-align: center;
+    background: #0f1513c2;
+    font-size: 2rem;
+    padding: 50px 0;
+    color: white;
+    width: 100%;
+}
+
+/* webcam.html */
+.webcam .actions {
+    position: absolute;
+    bottom: 0;
+    margin: auto;
+    width: 100%;
+}
+
+.webcam .actions * {
+    font-size: 1.2rem;
+}
+
+/* compare.html */
+.compare .images-wrapper {
+    height: 100vh;
+}
+
+.compare #images {
+    height: calc(100vh - 50px);
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+}
+
+.compare .image-container {
+    width: 100%;
+    overflow: hidden;
+    text-align: center;
+}
+
+.compare .image-container textarea {
+    width: 100%;
+}
+
+.compare .image-container img {
+    max-width: 100%;
+    max-height: 25vh;
+}
+
+.compare .actions {
+    display: flex;
+    justify-content: space-around;
+    text-align: center;
+}
+
+.compare .actions * {
+    font-size: 1.2rem;
+}
+
+.compare .actions label {
+    width: 50%;
+}

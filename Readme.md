@@ -1,9 +1,10 @@
 ### image_face_detector
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/grinat/image_face_detector)
 
-Rest api for face recognitions libs
+Rest api for face recognitions lib: [https://github.com/ageitgey/face_recognition](https://github.com/ageitgey/face_recognition)
 
-[Try](https://image-face-detector.herokuapp.com/static/webcam.html)
+[Webcam example](https://image-face-detector.herokuapp.com/static/webcam.html)
+[Compare example](https://image-face-detector.herokuapp.com/static/compare.html)
 
 [Swagger Docs](https://image-face-detector.herokuapp.com/api/v1/docs/)
 
@@ -28,4 +29,13 @@ make run-docker-image # run image
 ```
 pip3 install -r requirements.txt
 make prod
+```
+
+### Testing
+```
+make unittest
+```
+or
+```
+python -m unittest
 ```

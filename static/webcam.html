@@ -2,72 +2,35 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <title>WebCam test</title>
+    <link href="style.css" rel="stylesheet" type="text/css"/>
 </head>
-<body>
+<body class="webcam">
 
-<div id="webCamBlock">
-    <video autoplay="true" id="video"></video>
-    <button type="button" id="takeScreen">Take screen and detect</button>
+<div id="webCamBlock" class="centered">
+    <video autoplay="true" id="video" class="half-vh"></video>
+    <div class="actions">
+        <button type="button" id="takeScreen">Take screen and detect</button>
+    </div>
 </div>
-<div id="webCamFallback" style="display: none;">
+<div id="webCamFallback" style="display: none;" class="centered">
     <input type="file" id="imageInp">
 </div>
 
-<img src="" id="imageOut">
+<div class="centered">
+    <img src="" id="imageLandmarks" class="half-vh">
+</div>
 
-<script>
-    function onDeviceError() {
-        webCamFallback.style.display = 'block'
-        imageInp.addEventListener('change', handleChange)
-    }
+<div class="centered">
+    <img src="" id="imageLocations" class="half-vh">
+</div>
 
-    function handleChange(e) {
-        const files = e.target.files || e.dataTransfer.files
-        if (!files.length) {
-          return
-        }
+<div id="wait" style="display: none;">Wait...</div>
 
-        uploadFile(files[0])
-    }
-
-    function uploadFile(blob) {
-        const fd = new FormData()
-        fd.append('image', blob)
-
-        fetch('/api/v1/face-locations', {
-            method: 'POST',
-            body: fd
-        })
-            .catch(e => alert(e.toString()))
-            .then(r => r.json())
-            .then(r => {
-                if (!r.image_with_landmarks) {
-                    alert(r.message)
-                    return
-                }
-                imageOut.src = r.image_with_landmarks
-            })
-    }
-
-    function handleTakeScreen() {
-        const canvas = document.createElement('canvas')
-        canvas.height = video.videoHeight
-        canvas.width = video.videoWidth
-        const ctx = canvas.getContext('2d')
-        ctx.drawImage(video, 0, 0, canvas.width, canvas.height)
-        canvas.toBlob(uploadFile)
-    }
-
-    if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
-        navigator.mediaDevices.getUserMedia({video: true})
-            .then(stream => video.srcObject = stream)
-            .catch(e => onDeviceError())
-        takeScreen.addEventListener('click', handleTakeScreen)
-    } else {
-        onDeviceError()
-    }
-</script>
+<script type="text/javascript" src="common.js"></script>
+<script type="text/javascript" src="webcam.js"></script>
 
 </body>
 </html>
