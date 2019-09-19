@@ -9,7 +9,6 @@ services:
       dockerfile: Dockerfile
     volumes:
     - .:/app
-    - ./venv:/app/venv
     networks:
       - image_face_detector-network
     command: ["make", "dev-docker-compose"]
