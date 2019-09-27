@@ -41,7 +41,7 @@ async function uploadToHaystack(blob) {
             code: enc.face_encodings_list[0]
         })
         // reset same flag
-        images = images.map(img => ({...img, isSame: false}))
+        images = images.map(img => ({...img, isSame: false, distance: 0}))
 
         renderImages()
     } catch (e) {
@@ -85,6 +85,7 @@ async function uploadNeedle(blob) {
 
         comp.faces.forEach((isSame, i) => {
             images[i].isSame = isSame
+            images[i].distance = comp.face_distances[i]
         })
 
         renderImages()
@@ -98,11 +99,12 @@ async function uploadNeedle(blob) {
 
 function renderImages() {
     let str = ''
-    for (const {img, code, isSame} of images) {
+    for (const {img, code, isSame, distance} of images) {
         str += `
             <div class="image-container">
                 <img src="${img}">
                 <div>isSame: ${isSame}</div>
+                <div>distance: ${distance}</div>
                 <div>
                     <textarea>${code}</textarea>
                 </div>
