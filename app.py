@@ -10,7 +10,7 @@ import traceback
 app = Flask(__name__)
 CORS(app)
 
-APP_VERSION = "0.0.1"
+APP_VERSION = "0.0.2"
 SWAGGER_URL = '/api/v1/docs'
 API_URL = '/api/v1/swagger.json'
 OUT_IMAGE_SZ = 512
@@ -114,12 +114,14 @@ def compare_faces():
 
     haystack = body['haystack']
     needle = body['needle']
+    tolerance = 0.6
 
     out = recognition.compare(haystack, needle)
 
     result = {
         "app_version": APP_VERSION,
-        "faces": out['results']
+        "face_distances": out['face_distances'],
+        "faces": [dist <= tolerance for dist in out['face_distances']]
     }
 
     return json.dumps(result), 200

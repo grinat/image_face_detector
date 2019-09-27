@@ -51,12 +51,12 @@ def compare(haystack, needle):
         haystack_np_list.append(np.array(face))
 
     # compares numpy arrays
-    results_np = face_recognition.compare_faces(haystack_np_list, needle_np)
+    distances_np = face_recognition.face_distance(haystack_np_list, needle_np)
 
-    results = []
-    for res_np in results_np:
-        results.append(res_np.tolist())
+    distances = []
+    for res_np in distances_np:
+        distances.append(res_np.tolist())
 
     return {
-        "results": results
+        "face_distances": distances
     }
