@@ -49,9 +49,9 @@ def crop_faces(image, face_locations_list, size):
     faces = []
 
     for face_location in face_locations_list:
-        top, right, bottom, left = face_location
+        bottom, right, top, left = face_location
 
-        face_image = image[top:bottom, left:right]
+        face_image = image[bottom:top, left:right]
         pil_image = Image.fromarray(face_image)
 
         buffered = BytesIO()

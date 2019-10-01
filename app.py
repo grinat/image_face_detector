@@ -74,9 +74,15 @@ def face_locations():
     for image in out['images']:
         faces_base64.append("data:image/jpg;base64," + base64.b64encode(image.getvalue()).decode('ascii'))
 
+    # change pos, in format for PIL.ImageDraw.Draw.rectangle([x0, y0, x1, y1])
+    pillow_rectangles = []
+    for face_location in out['face_locations_list']:
+        bottom, right, top, left = face_location
+        pillow_rectangles.append((left, bottom, right, top))
+
     result = {
         "app_version": APP_VERSION,
-        "face_locations": out['face_locations_list'],
+        "face_locations": pillow_rectangles,
         "face_count": len(out['face_locations_list']),
         "images": faces_base64
     }
