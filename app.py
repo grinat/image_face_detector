@@ -3,7 +3,7 @@ from flask_cors import CORS
 from flask_swagger_ui import get_swaggerui_blueprint
 from werkzeug.exceptions import HTTPException
 import json
-import recognition, image_transform, file_operations
+import recognition, file_operations
 import base64
 import traceback
 
