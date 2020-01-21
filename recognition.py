@@ -33,13 +33,8 @@ def face_encodings(img_path):
     image = face_recognition.load_image_file(img_path)
     face_encodings_np_list = face_recognition.face_encodings(image)
 
-    # we convert numpy to list for cominicty with others api
-    face_encodings_list = []
-    for face_np in face_encodings_np_list:
-        face_encodings_list.append(face_np.tolist())
-
     return {
-        "face_encodings_list": face_encodings_list
+        "face_encodings_list": _np_array_to_list(face_encodings_np_list)
     }
 
 
@@ -60,3 +55,27 @@ def compare(haystack, needle):
     return {
         "face_distances": distances
     }
+
+
+# todo: remove face_recognition lib, write own implementation
+def face_metrics(img_path):
+    image = face_recognition.load_image_file(img_path)
+
+    # get landmarks
+    face_landmarks_list = face_recognition.face_landmarks(image)
+
+    # get encodings
+    face_encodings_list = _np_array_to_list(face_recognition.face_encodings(image))
+
+    # get face top, right, bottom, left
+    face_locations_list = face_recognition.face_locations(image)
+
+    return {
+        'face_landmarks_list': face_landmarks_list,
+        'face_encodings_list': face_encodings_list,
+        'face_locations_list': face_locations_list
+    }
+
+
+def _np_array_to_list(np_list):
+    return [item.tolist() for item in np_list]

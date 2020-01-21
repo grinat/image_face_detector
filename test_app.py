@@ -71,6 +71,23 @@ class AppCase(unittest.TestCase):
 
         self.assertEqual(body['faces'][0], True)
 
+    def test_face_metrics(self):
+        response = app.test_client().post(
+            '/api/v1/face-metrics',
+            data={
+                'image': (os.path.join(f"./fixtures/putin.jpg"), "img.jpg")
+            },
+            content_type='multipart/form-data',
+        )
+
+        self.assertEqual(response.status_code, 200)
+
+        body = json.loads(response.get_data(as_text=True))
+
+        self.assertEqual(len(body['face_landmarks_list']) > 0, True)
+        self.assertEqual(len(body['face_encodings_list']) > 0, True)
+        self.assertEqual(len(body['face_locations_list']) > 0, True)
+
 
 if __name__ == '__main__':
     unittest.main()

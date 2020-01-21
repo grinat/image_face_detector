@@ -10,7 +10,7 @@ import traceback
 app = Flask(__name__)
 CORS(app)
 
-APP_VERSION = "0.0.2"
+APP_VERSION = "0.0.3"
 SWAGGER_URL = '/api/v1/docs'
 API_URL = '/api/v1/swagger.json'
 OUT_IMAGE_SZ = 512
@@ -131,6 +131,20 @@ def compare_faces():
     }
 
     return json.dumps(result), 200
+
+
+@app.route('/api/v1/face-metrics', methods=['POST'])
+def face_metrics():
+    file_path = file_operations.save_file_and_return_path(request)
+
+    out = recognition.face_metrics(file_path)
+
+    return json.dumps({
+        "app_version": APP_VERSION,
+        'face_landmarks_list': out['face_landmarks_list'],
+        'face_encodings_list': out['face_encodings_list'],
+        'face_locations_list': out['face_locations_list']
+    }), 200
 
 
 @app.errorhandler(HTTPException)

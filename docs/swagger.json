@@ -85,6 +85,35 @@
         }
       }
     },
+    "/face-metrics": {
+      "post": {
+        "tags": [
+          "locations"
+        ],
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "in": "formData",
+            "name": "image",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success"
+          },
+          "500": {
+            "description": "Error"
+          }
+        }
+      }
+    },
     "/face-encodings": {
       "post": {
         "tags": [
